@@ -1,0 +1,15 @@
+acc-settings:
+  enable-sounds: true
+  enable-metrics: true
+  enable-update-checker: true
+  craft-cooldown-ticks: 8
+craft-settings:
+  enable-shaped-craftable: false
+  enable-shapeless-craftable: false
+  shaped-recipe:
+    - AIR,CHEST,AIR
+    - CHEST,CRAFTING_TABLE,CHEST
+    - AIR,CHEST,AIR
+  shapeless-recipe:
+    CHEST: 4
+    CRAFTING_TABLE: 1

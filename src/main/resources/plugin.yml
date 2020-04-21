@@ -1,0 +1,32 @@
+main: com.ugleh.autocraftchest.AutoCraftChest
+name: AutoCraftChest
+version: "${project.version}"
+author: Ugleh
+description: ${project.description}
+softdepend: [BlockLocker]
+api-version: "1.13"
+commands:
+  autocraftchest:
+    description: gives an Auto Craft Chest
+    usage: /autocraftchest give [player] <amount>
+    permission: autocraftchest.command
+permissions:
+  autocraftchest.*:
+    description: gives all permissions of the AutoCraftChest
+    default: op
+    children:
+      autocraftchest.give:
+        description: gives permission to give the AutoCraftChest out.
+        default: op
+      autocraftchest.reload:
+        description: gives permission to reload the AutoCraftChest config.
+        default: op
+      autocraftchest.use:
+        description: gives permission to open and use the AutoCraftChest.
+        default: true
+      autocraftchest.place:
+        description: gives permission to place the AutoCraftChest.
+        default: true
+      autocraftchest.craft:
+        description: gives permission to craft the AutoCraftChest.
+        default: true

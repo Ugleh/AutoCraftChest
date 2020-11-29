@@ -29,15 +29,26 @@ public class AutoCraftChest extends JavaPlugin {
     private CraftingUtil craftingUtil;
 
     private PluginSupport pluginSupport;
+    private static String failSafeVersion = "v_16_R3";
     @Override
     public void onEnable() {
         setInstance(this);
+        // If it can't find the right version it will try the latest fail safe version. This is to ensure that even past the latest version there is a chance it will work.
+        // Crafting hasn't changed in the last year or so so when it comes to nms packages you only need to rely on the last version most times.
         try {
             String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
             final Class<?> clazz = Class.forName("com.ugleh.autocraftchest.nms." + version + "NMS");
             craftingUtil = (CraftingUtil) clazz.getConstructor().newInstance();
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            final Class<?> clazz;
+            try {
+                clazz = Class.forName("com.ugleh.autocraftchest.nms." + failSafeVersion + "NMS");
+                craftingUtil = (CraftingUtil) clazz.getConstructor().newInstance();
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
+                ex.printStackTrace();
+            }
         }
         setLanguageInstance(new LanguageConfig(this, "language.yml"));
         //Why in this order? GUIManagement & Listener uses Language, and Config uses Listener

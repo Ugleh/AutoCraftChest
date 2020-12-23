@@ -136,6 +136,10 @@ public class ACC {
             String[] secondSplit = materialRaw.split(":");
             Material material = Material.matchMaterial(secondSplit[0]);
             int amount = Integer.parseInt(secondSplit[1]);
+            if(material == null) {
+                material = Material.AIR;
+                amount = 1;
+            }
             ItemStack itemStack = new ItemStack(material, amount);
             if(this.isRunning) {
                 makeUnattainable(itemStack);

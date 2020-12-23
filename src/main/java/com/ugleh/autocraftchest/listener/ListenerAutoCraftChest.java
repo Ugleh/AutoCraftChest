@@ -139,13 +139,29 @@ public class ListenerAutoCraftChest implements Listener {
         }
     }
 
-    private boolean checkIfAutoCraftNextdoor(Chest chest) {
-        Directional directional = (Directional) chest.getBlockData();
-        if(directional.getFacing() == BlockFace.NORTH || directional.getFacing() == BlockFace.SOUTH) {
+    private boolean checkIfAutoCraftNextdoor(Chest chest){
+        BlockFace blockFace = null;
+        try {
+            Directional directional = (Directional) chest.getBlockData();
+            blockFace = directional.getFacing();
+        }catch(NoSuchMethodError e) {
+            if(chestNearby(chest)) return true; //When the method doesn't exist it is when Minecraft connects any chests.
+        }
+
+        if(blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH) {
             return (autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.EAST).getLocation()) || autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.WEST).getLocation()));
-        }else if(directional.getFacing() == BlockFace.WEST || directional.getFacing() == BlockFace.EAST) {
+        }else if(blockFace == BlockFace.WEST || blockFace == BlockFace.EAST) {
             return (autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.NORTH).getLocation()) || autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.SOUTH).getLocation()));
         }
+        return false;
+    }
+
+    private boolean chestNearby(Chest chest) {
+        Location l = chest.getLocation();
+        if(l.clone().add(0,0,1).getBlock().getType() == Material.CHEST) return true;
+        if(l.clone().add(0,0,-1).getBlock().getType() == Material.CHEST) return true;
+        if(l.clone().add(1,0,0).getBlock().getType() == Material.CHEST) return true;
+        if(l.clone().add(-1,0,0).getBlock().getType() == Material.CHEST) return true;
         return false;
     }
 

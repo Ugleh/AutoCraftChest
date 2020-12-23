@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ugleh</groupId>
     <artifactId>AutoCraftChest</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>AutoCraftChest</name>
     <description>Introduces an automatic crafting chest.</description>
 
@@ -44,7 +44,7 @@
             <groupId>nl.rutgerkok</groupId>
             <artifactId>blocklocker</artifactId>
             <version>0.1</version>
-            <systemPath>C:/Users/Joseph/Desktop/MC Resources/Spigot Server #1/plugins/BlockLocker.jar</systemPath>
+            <systemPath>C:/Users/Joseph/Desktop/MC Resources/BlockLocker.jar</systemPath>
             <scope>system</scope>
         </dependency>
     </dependencies>

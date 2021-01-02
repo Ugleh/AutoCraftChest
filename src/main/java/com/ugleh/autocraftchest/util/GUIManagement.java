@@ -44,6 +44,8 @@ public class GUIManagement {
         clear = XMaterial.ORANGE_DYE.parseItem();
         ItemMeta clearMeta = confirm.getItemMeta();
         clearMeta.setDisplayName(ChatColor.GOLD + "Clear Recipe & Result");
+        clearMeta.setDisplayName(AutoCraftChest.getLanguageNode("button.reset-title"));
+        clearMeta.setLore(AutoCraftChest.getLanguage().wordWrapLore(AutoCraftChest.getLanguageNode("button.reset-lore")));
         clear.setItemMeta(clearMeta);
 
         //ACC Contents Button

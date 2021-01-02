@@ -2,6 +2,7 @@ package com.ugleh.autocraftchest.config;
 
 import com.ugleh.autocraftchest.AutoCraftChest;
 import com.ugleh.autocraftchest.util.ACC;
+import com.ugleh.autocraftchest.util.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -86,6 +87,7 @@ public class ACCStorage extends YamlConfiguration {
                         EnumMap<Material, Integer> ingredients = new EnumMap<>(Material.class);
                         for (String ingredient : this.getConfigurationSection(nodePrefix + ".ingredients").getKeys(false)) {
                             Material material = Material.matchMaterial(ingredient);
+                            //Material material = XMaterial.matchXMaterial(ingredient).parseMaterial();
                             if(material != null)
                                 ingredients.put(material, this.getInt(nodePrefix + ".ingredients." + ingredient));
                         }

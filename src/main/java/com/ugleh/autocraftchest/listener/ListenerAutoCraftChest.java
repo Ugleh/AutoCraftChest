@@ -119,14 +119,16 @@ public class ListenerAutoCraftChest implements Listener {
     private void onBlockPlace(BlockPlaceEvent e) {
         if(!e.getBlock().getType().equals(Material.CHEST)) return; //Faster check then next line
         Chest chest = (Chest) e.getBlock().getState();
-        boolean isAutoCraft = (!e.getPlayer().isSneaking()) && checkIfAutoCraftNextdoor(chest);
+        boolean placingDownAutoCraft = (e.getItemInHand().isSimilar(getInstance().getAccItemStack()));
+        boolean isAutoCraft = (!e.getPlayer().isSneaking()) && checkIfAutoCraftNextdoor(chest, placingDownAutoCraft);
         if(isAutoCraft) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(AutoCraftChest.getLanguageNode("chat.invalid-place"));
             playNotificationSound(e.getPlayer(), false);
+            return;
         }
 
-        if(e.getItemInHand().isSimilar(getInstance().getAccItemStack())) {
+        if(placingDownAutoCraft) {
             if(!e.getPlayer().hasPermission("autocraftchest.place")) {
                 e.getPlayer().sendMessage(AutoCraftChest.getLanguageNode("chat.no-permission-place"));
                 playNotificationSound(e.getPlayer(), false);
@@ -139,13 +141,14 @@ public class ListenerAutoCraftChest implements Listener {
         }
     }
 
-    private boolean checkIfAutoCraftNextdoor(Chest chest){
+    private boolean checkIfAutoCraftNextdoor(Chest chest, boolean placingAutoCraft){
         BlockFace blockFace = null;
         try {
             Directional directional = (Directional) chest.getBlockData();
             blockFace = directional.getFacing();
         }catch(NoSuchMethodError e) {
-            if(chestNearby(chest)) return true; //When the method doesn't exist it is when Minecraft connects any chests.
+            if(placingAutoCraft && chestNearby(chest)) return true;
+            return (autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.NORTH).getLocation()) || autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.EAST).getLocation()) || autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.WEST).getLocation()) || autoCraftChests.containsKey(chest.getBlock().getRelative(BlockFace.SOUTH).getLocation()));
         }
 
         if(blockFace == BlockFace.NORTH || blockFace == BlockFace.SOUTH) {
@@ -157,11 +160,12 @@ public class ListenerAutoCraftChest implements Listener {
     }
 
     private boolean chestNearby(Chest chest) {
+
         Location l = chest.getLocation();
-        if(l.clone().add(0,0,1).getBlock().getType() == Material.CHEST) return true;
-        if(l.clone().add(0,0,-1).getBlock().getType() == Material.CHEST) return true;
-        if(l.clone().add(1,0,0).getBlock().getType() == Material.CHEST) return true;
-        if(l.clone().add(-1,0,0).getBlock().getType() == Material.CHEST) return true;
+        if (l.clone().add(0, 0, 1).getBlock().getType() == Material.CHEST) return true;
+        if (l.clone().add(0, 0, -1).getBlock().getType() == Material.CHEST) return true;
+        if (l.clone().add(1, 0, 0).getBlock().getType() == Material.CHEST) return true;
+        if (l.clone().add(-1, 0, 0).getBlock().getType() == Material.CHEST) return true;
         return false;
     }
 

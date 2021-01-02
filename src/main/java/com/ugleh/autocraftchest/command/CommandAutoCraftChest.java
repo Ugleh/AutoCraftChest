@@ -90,7 +90,9 @@ public class CommandAutoCraftChest implements CommandExecutor {
         sender.sendMessage(AutoCraftChest.getLanguageNode("command.invalid-usage"));
         if(sender.hasPermission("autocraftchest.give"))
             sender.sendMessage( "/autocraftchest give [Player] <amount>");
-        return false;
+        if(sender.hasPermission("autocraftchest.reload"))
+            sender.sendMessage( "/autocraftchest reload");
+        return true;
     }
 
     private AutoCraftChest getInstance() {
